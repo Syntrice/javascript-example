@@ -1,11 +1,11 @@
-import express from 'express'
-const app = express()
-const port = 3000
+import "reflect-metadata";
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+import { Container } from "inversify";
+import { App } from "./app.js";
 
-app.listen(port, () => {
-  console.log(`JavaScript Example Backend listing at http://localhost:3000`)
-})
+const container: Container = new Container();
+
+container.bind(App).toSelf();
+
+const application = container.get<App>(App);
+application.run();
