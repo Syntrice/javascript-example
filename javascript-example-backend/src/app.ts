@@ -5,7 +5,7 @@ import express, { type Application } from "express";
 export class App {
   private app: Application;
 
-  constructor() {
+  public constructor() {
     this.app = express();
 
     this.app.get("/", (req, res) => {
