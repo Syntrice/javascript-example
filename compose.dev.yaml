@@ -1,0 +1,36 @@
+name: javascript-example
+services:
+  javascript-example-backend:
+    extends:
+        file: compose.common.yaml
+        service: javascript-example-backend
+    environment:
+      NODE_ENV: development
+  javascript-example-frontend:
+    extends:
+        file: compose.common.yaml
+        service: javascript-example-frontend
+    environment:
+      NODE_ENV: development
+    build:
+      context: javascript-example-frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5173:5173"
+    develop:
+      watch:
+        - action: sync
+          path: javascript-example-frontend
+          target: /usr/src/app
+          ignore:
+          - node_modules/
+          - dist/
+          - package.json
+          - pnpm-lock.yaml
+          - Dockerfile.dev
+        - action: rebuild
+          path: javascript-example-frontend/package.json
+        - action: rebuild
+          path: javascript-example-frontend/pnpm-lock.yaml
+        - action: rebuild
+          path: javascript-example-frontend/Dockerfile.dev

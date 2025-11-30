@@ -1,0 +1,13 @@
+name: javascript-example
+services:
+  javascript-example-backend:
+    container_name: javascript-example-backend
+    build:
+      context: javascript-example-backend
+    ports:
+      - 3000:3000
+  javascript-example-frontend:
+    container_name: javascript-example-frontend
+    build:
+      context: javascript-example-frontend
+

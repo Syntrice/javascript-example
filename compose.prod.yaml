@@ -1,0 +1,16 @@
+name: javascript-example
+services:
+  javascript-example-backend:
+    extends:
+        file: compose.common.yaml
+        service: javascript-example-backend
+    environment:
+      NODE_ENV: production
+  javascript-example-frontend:
+    extends:
+        file: compose.common.yaml
+        service: javascript-example-frontend
+    environment:
+      NODE_ENV: production
+    ports:
+      - 8080:8080

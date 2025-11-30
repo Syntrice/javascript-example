@@ -1,0 +1,27 @@
+ARG NODE_VERSION=22.19.0
+ARG PNPM_VERSION=10.17.1
+
+FROM node:${NODE_VERSION}-alpine
+
+# Set working directory
+WORKDIR /usr/src/app
+
+# Install pnpm
+RUN --mount=type=cache,target=/root/.npm \
+    npm install -g pnpm@${PNPM_VERSION}
+
+# Copy package files
+COPY package.json pnpm-lock.yaml ./
+
+# Install dependencies (including devDependencies)
+RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
+    pnpm install --frozen-lockfile
+
+# Copy the rest of the source code
+COPY . .
+
+# Expose the port used by the Vite development server
+EXPOSE 5173
+
+# Use a default command, can be overridden in Docker compose.yml file
+CMD ["pnpm", "run", "dev"]
