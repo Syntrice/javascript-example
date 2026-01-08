@@ -3,6 +3,9 @@
 A full-stack JavaScript application with a React frontend and Express backend, containerized with
 Docker.
 
+This repo is supposed to serve as a reference to myself and others wishing to create a full-stack typescript 
+monorepo setup. The commit history provides a breakdown of setup instructions, from the ground up. 
+
 ## Prerequisites
 
 - [Docker](https://docs.docker.com/get-docker/) and Docker Compose
