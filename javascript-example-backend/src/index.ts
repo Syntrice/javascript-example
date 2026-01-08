@@ -3,11 +3,13 @@ import "reflect-metadata";
 import { Container } from "inversify";
 import { InversifyExpressHttpAdapter } from "@inversifyjs/http-express-v4";
 import { RootController } from "./controllers/root.controller.js";
+import { UserController } from "./controllers/user.controller.js";
 import { setupSwagger } from "./swagger.js";
 
 const container: Container = new Container();
 
 container.bind(RootController).toSelf().inSingletonScope();
+container.bind(UserController).toSelf().inSingletonScope();
 
 const adapter: InversifyExpressHttpAdapter = new InversifyExpressHttpAdapter(container);
 

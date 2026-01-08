@@ -1,13 +1,35 @@
 name: javascript-example
 services:
+  javascript-example-database:
+    container_name: javascript-example-database
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: "sample"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+    ports:
+      - 5432:5432
+    volumes:
+      [database:/var/lib/postgresql]
+    secrets:
+      - postgres_password 
   javascript-example-backend:
     container_name: javascript-example-backend
     build:
       context: javascript-example-backend
     ports:
       - 3000:3000
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+    secrets:
+      - postgres_password 
   javascript-example-frontend:
     container_name: javascript-example-frontend
     build:
       context: javascript-example-frontend
-
+secrets:
+  postgres_password:
+    file: secrets/postgres_password.txt
+volumes:
+  database:

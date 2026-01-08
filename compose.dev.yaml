@@ -1,11 +1,26 @@
 name: javascript-example
 services:
+  javascript-example-database:
+    extends:
+        file: compose.common.yaml
+        service: javascript-example-database
   javascript-example-backend:
     extends:
         file: compose.common.yaml
         service: javascript-example-backend
+    build:
+      context: javascript-example-backend
+      dockerfile: Dockerfile.dev
     environment:
       NODE_ENV: development
+    volumes: # Bind mount for prisma files
+      - ./javascript-example-backend/src/database/migrations:/usr/src/app/src/database/migrations
+      - ./javascript-example-backend/generated:/usr/src/app/generated
+    ports:
+      - "5555:5555" # Prisma Studio
+    depends_on:
+      javascript-example-database: # Ensure database is started before backend starts
+        condition: service_started
   javascript-example-frontend:
     extends:
         file: compose.common.yaml
@@ -34,3 +49,8 @@ services:
           path: javascript-example-frontend/pnpm-lock.yaml
         - action: rebuild
           path: javascript-example-frontend/Dockerfile.dev
+secrets:
+  postgres_password:
+    file: secrets/postgres_password.txt
+volumes:
+  database:
