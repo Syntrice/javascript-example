@@ -6,7 +6,7 @@ import unusedImports from "eslint-plugin-unused-imports";
 
 export default defineConfig([
   {
-    ignores: ["dist/**", "node_modules/**", "eslint.config.ts"],
+    ignores: ["**/dist/**", "**/node_modules/**", "**/generated/**", "eslint.config.ts"],
   },
   {
     files: ["**/*.{js,mjs,cjs,ts,mts,cts}"],
@@ -38,6 +38,7 @@ export default defineConfig([
     languageOptions: {
       parserOptions: {
         projectService: true,
+        tsconfigRootDir: import.meta.dirname,
       },
     },
   },

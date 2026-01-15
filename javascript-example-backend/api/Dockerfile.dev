@@ -1,0 +1,38 @@
+# syntax=docker/dockerfile:1
+
+ARG NODE_VERSION=22.19.0
+ARG PNPM_VERSION=10.17.1
+
+FROM node:${NODE_VERSION}-alpine
+
+# Set working directory
+WORKDIR /usr/src/app
+
+# Install pnpm
+RUN --mount=type=cache,target=/root/.npm \
+    npm install -g pnpm@${PNPM_VERSION}
+
+# Copy workspace config files from root context
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+
+# Copy all package.json files needed for the workspace
+COPY javascript-example-backend/package.json ./javascript-example-backend/
+COPY javascript-example-backend/api/package.json ./javascript-example-backend/api/
+
+# Install dependencies for this package and its workspace dependencies
+RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
+    pnpm install --frozen-lockfile --filter @javascript-example-backend/api...
+
+# Copy source files
+COPY javascript-example-backend/api ./javascript-example-backend/api
+COPY javascript-example-backend/tsconfig.base.json ./javascript-example-backend/
+COPY javascript-example-backend/eslint.config.ts ./javascript-example-backend/
+
+# Set working directory to the api package
+WORKDIR /usr/src/app/javascript-example-backend/api
+
+# Expose port
+EXPOSE 3000
+
+# Default command
+CMD ["pnpm", "run", "dev"]

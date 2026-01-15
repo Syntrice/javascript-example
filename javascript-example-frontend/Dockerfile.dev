@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 ARG NODE_VERSION=22.19.0
 ARG PNPM_VERSION=10.17.1
 
@@ -10,15 +12,21 @@ WORKDIR /usr/src/app
 RUN --mount=type=cache,target=/root/.npm \
     npm install -g pnpm@${PNPM_VERSION}
 
-# Copy package files
-COPY package.json pnpm-lock.yaml ./
+# Copy workspace config files from root context
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
-# Install dependencies (including devDependencies)
+# Copy package.json for frontend
+COPY javascript-example-frontend/package.json ./javascript-example-frontend/
+
+# Install dependencies for this package only
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
-    pnpm install --frozen-lockfile
+    pnpm install --frozen-lockfile --filter javascript-example-frontend
 
 # Copy the rest of the source code
-COPY . .
+COPY javascript-example-frontend ./javascript-example-frontend
+
+# Set working directory to the frontend package
+WORKDIR /usr/src/app/javascript-example-frontend
 
 # Expose the port used by the Vite development server
 EXPOSE 5173

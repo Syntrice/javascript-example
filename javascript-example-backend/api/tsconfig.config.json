@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    // Required for project references
+    "composite": true,
+    "outDir": "./dist/config"
+  },
+  "include": ["prisma.config.ts"]
+}

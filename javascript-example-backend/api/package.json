@@ -1,0 +1,42 @@
+{
+  "name": "@javascript-example-backend/api",
+  "private": true,
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "build": "prisma generate && tsc -b",
+    "start": "node dist/index.js",
+    "dev": "prisma generate && tsc -b && node dist/index.js",
+    "lint": "pnpm --filter javascript-example-backend lint api",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate:dev": "prisma migrate dev",
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "prisma:db:push": "prisma db push",
+    "prisma:studio": "prisma studio --browser none --port 5555"
+  },
+  "devDependencies": {
+    "javascript-example-backend": "workspace:*",
+    "@types/express": "^5.0.5",
+    "@types/pg": "^8.16.0",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
+    "prisma": "^7.2.0"
+  },
+  "dependencies": {
+    "@inversifyjs/http-core": "^4.6.0",
+    "@inversifyjs/http-express-v4": "^4.6.0",
+    "@prisma/adapter-pg": "^7.2.0",
+    "@prisma/client": "^7.2.0",
+    "@prisma/client-runtime-utils": "^7.2.0", 
+    "express": "^5.1.0",
+    "inversify": "^7.10.4",
+    "pg": "^8.16.3",
+    "reflect-metadata": "^0.2.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "prisma": {
+    "schema": "src/database/schema.prisma"
+  }
+}

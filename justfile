@@ -2,7 +2,7 @@
 
 # Run command in backend container
 be *args:
-    docker compose -f compose.dev.yaml exec javascript-example-backend {{args}}
+    docker compose -f compose.dev.yaml exec javascript-example-backend-api {{args}}
 
 # Run command in frontend container
 fe *args:

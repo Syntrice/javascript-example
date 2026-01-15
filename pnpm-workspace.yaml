@@ -1,0 +1,12 @@
+packages:
+  - javascript-example-backend
+  - javascript-example-backend/*
+  - javascript-example-frontend
+
+ignoredBuiltDependencies:
+  - '@scarf/scarf'
+
+onlyBuiltDependencies:
+  - '@prisma/engines'
+  - esbuild
+  - prisma
