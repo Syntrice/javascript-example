@@ -4,18 +4,18 @@ services:
     extends:
         file: compose.common.yaml
         service: javascript-example-database
-  javascript-example-backend:
+  javascript-example-backend-api:
     extends:
         file: compose.common.yaml
-        service: javascript-example-backend
+        service: javascript-example-backend-api
     build:
-      context: javascript-example-backend
-      dockerfile: Dockerfile.dev
+      context: .
+      dockerfile: javascript-example-backend/projects/api/Dockerfile.dev
     environment:
       NODE_ENV: development
     volumes: # Bind mount for prisma files
-      - ./javascript-example-backend/src/database/migrations:/usr/src/app/src/database/migrations
-      - ./javascript-example-backend/generated:/usr/src/app/generated
+      - ./javascript-example-backend/projects/api/src/database/migrations:/usr/src/app/javascript-example-backend/projects/api/src/database/migrations
+      - ./javascript-example-backend/projects/api/generated:/usr/src/app/javascript-example-backend/projects/api/generated
     ports:
       - "5555:5555" # Prisma Studio
     depends_on:
@@ -28,25 +28,24 @@ services:
     environment:
       NODE_ENV: development
     build:
-      context: javascript-example-frontend
-      dockerfile: Dockerfile.dev
+      context: .
+      dockerfile: javascript-example-frontend/Dockerfile.dev
     ports:
       - "5173:5173"
     develop:
       watch:
         - action: sync
           path: javascript-example-frontend
-          target: /usr/src/app
+          target: /usr/src/app/javascript-example-frontend
           ignore:
           - node_modules/
           - dist/
           - package.json
-          - pnpm-lock.yaml
           - Dockerfile.dev
         - action: rebuild
           path: javascript-example-frontend/package.json
         - action: rebuild
-          path: javascript-example-frontend/pnpm-lock.yaml
+          path: pnpm-lock.yaml
         - action: rebuild
           path: javascript-example-frontend/Dockerfile.dev
 secrets:

@@ -1,9 +1,9 @@
 name: javascript-example
 services:
-  javascript-example-backend:
+  javascript-example-backend-api:
     extends:
         file: compose.common.yaml
-        service: javascript-example-backend
+        service: javascript-example-backend-api
     environment:
       NODE_ENV: production
   javascript-example-frontend:
