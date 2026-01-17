@@ -2,7 +2,11 @@
 
 # Run command in backend container
 be *args:
-    docker compose -f compose.dev.yaml exec javascript-example-backend {{args}}
+    docker compose -f compose.dev.yaml exec javascript-example-backend-api {{args}}
+
+# Run pnpm command in backend api package
+be-api *args:
+    docker compose -f compose.dev.yaml exec javascript-example-backend-api pnpm --filter @javascript-example-backend/api {{args}}
 
 # Run command in frontend container
 fe *args:
@@ -22,12 +26,12 @@ down:
 
 # Prisma generate
 prisma-generate:
-    just be pnpm prisma:generate
+    just be-api prisma:generate
 
 # Prisma migrate dev
 prisma-migrate:
-    just be pnpm prisma:migrate:dev
+    just be-api prisma:migrate:dev
 
 # Prisma studio
 prisma-studio:
-    just be pnpm prisma:studio
+    just be-api prisma:studio

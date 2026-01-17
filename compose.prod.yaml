@@ -4,6 +4,11 @@ services:
     extends:
         file: compose.common.yaml
         service: javascript-example-backend-api
+    build:
+      context: .
+      dockerfile: javascript-example-backend/projects/api/Dockerfile
+      secrets:
+        - postgres_password
     environment:
       NODE_ENV: production
   javascript-example-frontend:

@@ -3,6 +3,7 @@ lockfileVersion: '9.0'
 settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
+  injectWorkspacePackages: true
 
 importers:
 
@@ -58,9 +59,6 @@ importers:
       inversify:
         specifier: ^7.10.4
         version: 7.11.0(reflect-metadata@0.2.2)
-      javascript-example-backend:
-        specifier: workspace:*
-        version: link:../..
       pg:
         specifier: ^8.16.3
         version: 8.17.1
@@ -86,6 +84,9 @@ importers:
       '@types/swagger-ui-express':
         specifier: ^4.1.8
         version: 4.1.8
+      javascript-example-backend:
+        specifier: workspace:*
+        version: link:../..
       prisma:
         specifier: ^7.2.0
         version: 7.2.0(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3)

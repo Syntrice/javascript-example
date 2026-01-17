@@ -1,27 +1,33 @@
+# syntax=docker/dockerfile:1
+
 ARG NODE_VERSION=22.19.0
-ARG PNPM_VERSION=10.17.1
 
 FROM node:${NODE_VERSION}-alpine
+
+# Set env variables
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+
+# Use corepack to handle pnpm
+RUN corepack enable
 
 # Set working directory
 WORKDIR /usr/src/app
 
-# Install pnpm
-RUN --mount=type=cache,target=/root/.npm \
-    npm install -g pnpm@${PNPM_VERSION}
+# Copy monorepo root files and workspace config
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
-# Copy package files
-COPY package.json pnpm-lock.yaml ./
+# Copy frontend files over
+COPY javascript-example-frontend/ ./javascript-example-frontend
 
-# Install dependencies (including devDependencies)
-RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
-    pnpm install --frozen-lockfile
+# Copy this projects files over and any other dependencies this service needs
 
-# Copy the rest of the source code
-COPY . .
+# Install dependencies for this project
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+  pnpm install --filter "@javascript-example-frontend..." --frozen-lockfile
 
 # Expose the port used by the Vite development server
 EXPOSE 5173
 
-# Use a default command, can be overridden in Docker compose.yml file
-CMD ["pnpm", "run", "dev"]
+# Start the dev server
+CMD ["pnpm", "--filter", "@javascript-example-frontend", "run", "dev"]

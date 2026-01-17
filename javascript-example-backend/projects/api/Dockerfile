@@ -1,75 +1,81 @@
 # syntax=docker/dockerfile:1
 
-# Comments are provided throughout this file to help you get started.
-# If you need more help, visit the Dockerfile reference guide at
-# https://docs.docker.com/go/dockerfile-reference/
-
-# Want to help us make this template better? Share your feedback here: https://forms.gle/ybq9Krt8jtBL3iCk7
-
 ARG NODE_VERSION=22.19.0
-ARG PNPM_VERSION=10.17.1
 
-################################################################################
-# Use node image for base image for all stages.
-FROM node:${NODE_VERSION}-alpine as base
+#---------------------------
+#     BASE STAGE
+#---------------------------
 
-# Set working directory for all build stages.
+FROM node:${NODE_VERSION}-alpine AS base
+
+# Set env variables
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+
+# Use corepack to handle pnpm
+RUN corepack enable
+
+# Set working directory
 WORKDIR /usr/src/app
 
-# Install pnpm.
-RUN --mount=type=cache,target=/root/.npm \
-    npm install -g pnpm@${PNPM_VERSION}
+#---------------------------
+#     BUILD STAGE
+#---------------------------
 
-################################################################################
-# Create a stage for installing production dependecies.
-FROM base as deps
+FROM base AS build
 
-# Download dependencies as a separate step to take advantage of Docker's caching.
-# Leverage a cache mount to /root/.local/share/pnpm/store to speed up subsequent builds.
-# Leverage bind mounts to package.json and pnpm-lock.yaml to avoid having to copy them
-# into this layer.
-RUN --mount=type=bind,source=package.json,target=package.json \
-    --mount=type=bind,source=pnpm-lock.yaml,target=pnpm-lock.yaml \
-    --mount=type=cache,target=/root/.local/share/pnpm/store \
-    pnpm install --prod --frozen-lockfile
+# Copy monorepo root files and workspace config
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
-################################################################################
-# Create a stage for building the application.
-FROM deps as build
+# Copy shared backend files
+COPY javascript-example-backend/*.* ./javascript-example-backend/
 
-# Download additional development dependencies before building, as some projects require
-# "devDependencies" to be installed to build. If you don't need this, remove this step.
-RUN --mount=type=bind,source=package.json,target=package.json \
-    --mount=type=bind,source=pnpm-lock.yaml,target=pnpm-lock.yaml \
-    --mount=type=cache,target=/root/.local/share/pnpm/store \
-    pnpm install --frozen-lockfile
+# Copy api project files
+COPY javascript-example-backend/projects/api/ ./javascript-example-backend/projects/api/
 
-# Copy the rest of the source files into the image.
-COPY . .
-# Run the build script.
-RUN pnpm run build
+# Install all dependencies
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+  pnpm install --filter "@javascript-example-backend/api..." --frozen-lockfile
 
-################################################################################
-# Create a new stage to run the application with minimal runtime dependencies
-# where the necessary files are copied from the build stage.
-FROM base as final
+# Generate Prisma client and build (using BuildKit secret for database password)
+RUN --mount=type=secret,id=postgres_password \
+  POSTGRES_PASSWORD_FILE=/run/secrets/postgres_password \
+  pnpm --filter "@javascript-example-backend/api" run build
 
-# Use production node environment by default.
-ENV NODE_ENV production
+#---------------------------
+#     RUNNER STAGE
+#---------------------------
 
-# Run the application as a non-root user.
+FROM base AS runner
+
+# Use production node environment
+ENV NODE_ENV=production
+
+# Run as non-root user
 USER node
 
-# Copy package.json so that package manager commands can be used.
-COPY package.json .
+# Copy monorepo root files
+COPY --chown=node:node package.json pnpm-workspace.yaml ./
 
-# Copy the production dependencies from the deps stage and also
-# the built application from the build stage into the image.
-COPY --from=deps /usr/src/app/node_modules ./node_modules
-COPY --from=build /usr/src/app/dist ./dist
+# Copy backend workspace package.json
+COPY --chown=node:node javascript-example-backend/*.* ./javascript-example-backend/
 
-# Expose the port that the application listens on.
+# Copy api project package.json
+COPY --chown=node:node javascript-example-backend/projects/api/package.json ./javascript-example-backend/projects/api/
+
+# Copy production dependencies from build stage
+COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
+COPY --chown=node:node --from=build /usr/src/app/javascript-example-backend/node_modules ./javascript-example-backend/node_modules
+COPY --chown=node:node --from=build /usr/src/app/javascript-example-backend/projects/api/node_modules ./javascript-example-backend/projects/api/node_modules
+
+# Copy built application
+COPY --chown=node:node --from=build /usr/src/app/javascript-example-backend/projects/api/dist ./javascript-example-backend/projects/api/dist
+
+# Copy generated Prisma client
+COPY --chown=node:node --from=build /usr/src/app/javascript-example-backend/projects/api/generated ./javascript-example-backend/projects/api/generated
+
+# Expose the port
 EXPOSE 3000
 
-# Run the application.
-CMD pnpm start
+# Run the application
+CMD ["pnpm", "--filter", "@javascript-example-backend/api", "run", "start"]
