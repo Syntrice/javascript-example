@@ -17,17 +17,18 @@ WORKDIR /usr/src/app
 # Copy monorepo root files and workspace config
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
-# Copy frontend files over
-COPY javascript-example-frontend/ ./javascript-example-frontend
+# Copy shared backend files over
+COPY javascript-example-backend/*.* ./javascript-example-backend/
 
 # Copy this projects files over and any other dependencies this service needs
 
+COPY javascript-example-backend/projects/api/ ./javascript-example-backend/projects/api/
+
 # Install dependencies for this project
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
-  pnpm install --filter "@javascript-example-frontend..." --frozen-lockfile
+  pnpm install --filter "@javascript-example-backend/api..." --frozen-lockfile
 
-# Expose the port used by the Vite development server
-EXPOSE 5173
-
-# Start the dev server
-CMD ["pnpm", "--filter", "@javascript-example-frontend", "run", "dev"]
+# Start dev server
+EXPOSE 3000
+EXPOSE 5555
+CMD ["pnpm", "--filter", "@javascript-example-backend/api", "run", "dev"]

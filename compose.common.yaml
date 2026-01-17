@@ -11,13 +11,14 @@ services:
     ports:
       - 5432:5432
     volumes:
-      [database:/var/lib/postgresql]
+      - database:/var/lib/postgresql
     secrets:
       - postgres_password 
-  javascript-example-backend:
-    container_name: javascript-example-backend
+  javascript-example-backend-api:
+    container_name: javascript-example-backend-api
     build:
-      context: javascript-example-backend
+      context: .
+      dockerfile: javascript-example-backend/projects/api/Dockerfile
     ports:
       - 3000:3000
     environment:
@@ -27,7 +28,8 @@ services:
   javascript-example-frontend:
     container_name: javascript-example-frontend
     build:
-      context: javascript-example-frontend
+      context: .
+      dockerfile: javascript-example-frontend/Dockerfile
 secrets:
   postgres_password:
     file: secrets/postgres_password.txt
