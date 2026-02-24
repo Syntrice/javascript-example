@@ -33,10 +33,10 @@ COPY javascript-example-frontend/ ./javascript-example-frontend/
 
 # Install all dependencies
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
-  pnpm install --filter "@javascript-example-frontend..." --frozen-lockfile
+  pnpm install --filter "javascript-example-frontend..." --frozen-lockfile
 
 # Run the build
-RUN pnpm --filter "@javascript-example-frontend" run build
+RUN pnpm --filter "javascript-example-frontend" run build
 
 #---------------------------
 #     RUNNER STAGE
