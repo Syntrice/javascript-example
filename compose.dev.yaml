@@ -4,6 +4,10 @@ services:
     extends:
         file: compose.common.yaml
         service: javascript-example-database
+  javascript-example-redis:
+    extends:
+        file: compose.common.yaml
+        service: javascript-example-redis
   javascript-example-backend-api:
     extends:
         file: compose.common.yaml
@@ -46,6 +50,14 @@ services:
     depends_on:
       javascript-example-database:
         condition: service_started
+  javascript-example-redis-insight:
+    container_name: javascript-example-redis-insight
+    image: redis/redisinsight:latest
+    ports:
+      - "5540:5540"
+    depends_on:
+      javascript-example-redis:
+        condition: service_started
   javascript-example-frontend:
     extends:
         file: compose.common.yaml
@@ -78,3 +90,4 @@ secrets:
     file: secrets/postgres_password.txt
 volumes:
   database:
+  redis:
