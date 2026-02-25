@@ -20,17 +20,13 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 # Copy shared backend files over
 COPY javascript-example-backend/*.* ./javascript-example-backend/
 
-# Copy common package (dependency)
+# Copy common package
 COPY javascript-example-backend/projects/common/ ./javascript-example-backend/projects/common/
 
-# Copy this projects files over
-COPY javascript-example-backend/projects/api/ ./javascript-example-backend/projects/api/
-
-# Install dependencies for api and common (common needs devDeps for tsc)
+# Install dependencies for this project
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
-  pnpm install --filter "@javascript-example-backend/api..." --frozen-lockfile
+  pnpm install --filter "@javascript-example-backend/common..." --frozen-lockfile
 
-# Start dev server
-# Build common first (prisma generate + tsc), then run api
-EXPOSE 3000
-CMD ["sh", "-c", "pnpm --filter @javascript-example-backend/common run build && pnpm --filter @javascript-example-backend/api run dev"]
+# Run Prisma Studio
+EXPOSE 5555
+CMD ["pnpm", "--filter", "@javascript-example-backend/common", "prisma:studio"]

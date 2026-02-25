@@ -1,0 +1,30 @@
+{
+  "name": "@javascript-example-backend/common",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "prisma generate && tsc -b",
+    "lint": "pnpm --filter javascript-example-backend lint common",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate:dev": "prisma migrate dev",
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "prisma:db:push": "prisma db push",
+    "prisma:studio": "prisma studio --browser none --port 5555"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.2.0",
+    "@prisma/client": "^7.2.0",
+    "@prisma/client-runtime-utils": "^7.2.0",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "typescript": "catalog:backend",
+    "@types/node": "catalog:backend",
+    "@types/pg": "^8.16.0",
+    "prisma": "^7.2.0"
+  },
+  "prisma": {
+    "schema": "src/database/schema.prisma"
+  }
+}

@@ -8,6 +8,10 @@ be *args:
 be-api *args:
     docker compose -f compose.dev.yaml exec javascript-example-backend-api pnpm --filter @javascript-example-backend/api {{args}}
 
+# Run pnpm command in db-tools container (for prisma commands)
+db *args:
+    docker compose -f compose.dev.yaml exec javascript-example-db-tools pnpm --filter @javascript-example-backend/common {{args}}
+
 # Run command in frontend container
 fe *args:
     docker compose -f compose.dev.yaml exec javascript-example-frontend {{args}}
@@ -26,12 +30,13 @@ down:
 
 # Prisma generate
 prisma-generate:
-    just be-api prisma:generate
+    just db prisma:generate
 
 # Prisma migrate dev
 prisma-migrate:
-    just be-api prisma:migrate:dev
+    just db prisma:migrate:dev
 
-# Prisma studio
-prisma-studio:
-    just be-api prisma:studio
+
+# Prisma reset (drops database and recreates)
+prisma-reset:
+    just db exec prisma migrate reset

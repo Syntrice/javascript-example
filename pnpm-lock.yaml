@@ -71,24 +71,15 @@ importers:
       '@inversifyjs/http-express-v4':
         specifier: ^4.6.0
         version: 4.9.1(express@5.2.1)(inversify@7.11.0(reflect-metadata@0.2.2))(reflect-metadata@0.2.2)(winston@3.19.0)
-      '@prisma/adapter-pg':
-        specifier: ^7.2.0
-        version: 7.2.0
-      '@prisma/client':
-        specifier: ^7.2.0
-        version: 7.2.0(prisma@7.2.0(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3))(typescript@5.9.3)
-      '@prisma/client-runtime-utils':
-        specifier: ^7.2.0
-        version: 7.2.0
+      '@javascript-example-backend/common':
+        specifier: workspace:*
+        version: link:../common
       express:
         specifier: ^5.1.0
         version: 5.2.1
       inversify:
         specifier: ^7.10.4
         version: 7.11.0(reflect-metadata@0.2.2)
-      pg:
-        specifier: ^8.16.3
-        version: 8.17.1
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
@@ -105,15 +96,37 @@ importers:
       '@types/node':
         specifier: catalog:backend
         version: 24.10.9
-      '@types/pg':
-        specifier: ^8.16.0
-        version: 8.16.0
       '@types/swagger-jsdoc':
         specifier: ^6.0.4
         version: 6.0.4
       '@types/swagger-ui-express':
         specifier: ^4.1.8
         version: 4.1.8
+      typescript:
+        specifier: catalog:backend
+        version: 5.9.3
+
+  javascript-example-backend/projects/common:
+    dependencies:
+      '@prisma/adapter-pg':
+        specifier: ^7.2.0
+        version: 7.2.0
+      '@prisma/client':
+        specifier: ^7.2.0
+        version: 7.2.0(prisma@7.2.0(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3))(typescript@5.9.3)
+      '@prisma/client-runtime-utils':
+        specifier: ^7.2.0
+        version: 7.2.0
+      pg:
+        specifier: ^8.16.3
+        version: 8.17.1
+    devDependencies:
+      '@types/node':
+        specifier: catalog:backend
+        version: 24.10.9
+      '@types/pg':
+        specifier: ^8.16.0
+        version: 8.16.0
       prisma:
         specifier: ^7.2.0
         version: 7.2.0(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3)

@@ -13,13 +13,28 @@ services:
       dockerfile: javascript-example-backend/projects/api/Dockerfile.dev
     environment:
       NODE_ENV: development
-    volumes: # Bind mount for prisma files
-      - ./javascript-example-backend/projects/api/src/database/migrations:/usr/src/app/javascript-example-backend/projects/api/src/database/migrations
-      - ./javascript-example-backend/projects/api/generated:/usr/src/app/javascript-example-backend/projects/api/generated
-    ports:
-      - "5555:5555" # Prisma Studio
+    volumes:
+      - ./javascript-example-backend/projects/common/dist:/usr/src/app/javascript-example-backend/projects/common/dist
+      - ./javascript-example-backend/projects/common/generated:/usr/src/app/javascript-example-backend/projects/common/generated
     depends_on:
-      javascript-example-database: # Ensure database is started before backend starts
+      javascript-example-database:
+        condition: service_started
+  javascript-example-db-tools:
+    container_name: javascript-example-db-tools
+    build:
+      context: .
+      dockerfile: javascript-example-backend/projects/common/Dockerfile.dev
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+    volumes:
+      - ./javascript-example-backend/projects/common/src/database:/usr/src/app/javascript-example-backend/projects/common/src/database
+      - ./javascript-example-backend/projects/common/generated:/usr/src/app/javascript-example-backend/projects/common/generated
+    ports:
+      - "5555:5555"
+    secrets:
+      - postgres_password
+    depends_on:
+      javascript-example-database:
         condition: service_started
   javascript-example-frontend:
     extends:

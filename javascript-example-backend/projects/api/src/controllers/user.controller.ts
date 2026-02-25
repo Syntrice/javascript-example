@@ -1,6 +1,5 @@
 import { Body, Controller, Get, Post } from "@inversifyjs/http-core";
-import { prisma } from "../database/prisma-client.js";
-import type { User } from "../../generated/prisma/index.js";
+import { prisma, type User } from "@javascript-example-backend/common";
 
 /**
  * @openapi
