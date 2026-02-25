@@ -25,6 +25,17 @@ services:
       POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
     secrets:
       - postgres_password 
+  javascript-example-backend-authority:
+    container_name: javascript-example-backend-authority
+    build:
+      context: .
+      dockerfile: javascript-example-backend/projects/authority/Dockerfile
+    ports:
+      - 3001:3001
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+    secrets:
+      - postgres_password 
   javascript-example-frontend:
     container_name: javascript-example-frontend
     build:

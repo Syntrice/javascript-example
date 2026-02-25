@@ -1,12 +1,12 @@
 {
-  "name": "@javascript-example-backend/api",
+  "name": "@javascript-example-backend/authority",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "build": "tsc -b",
     "start": "node dist/index.js",
     "dev": "tsc -b && node dist/index.js",
-    "lint": "pnpm --filter javascript-example-backend lint projects/api",
+    "lint": "pnpm --filter javascript-example-backend lint projects/authority",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "packageManager": "pnpm@10.17.1",

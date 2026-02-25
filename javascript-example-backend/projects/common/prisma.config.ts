@@ -13,7 +13,7 @@ function getDatabaseUrl(): string {
     return `postgresql://postgres:${encodedPassword}@javascript-example-database:5432/sample?schema=public`;
   }
 
-  throw new Error("POSTGRES_PASSWORD_FILE is not set or does not exist.");
+  return "";
 }
 
 export default defineConfig({

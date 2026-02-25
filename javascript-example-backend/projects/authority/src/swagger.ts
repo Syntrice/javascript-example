@@ -16,9 +16,9 @@ export function setupSwagger(app: Application): void {
     definition: {
       openapi: '3.0.0',
       info: {
-        title: 'JavaScript Example API',
+        title: 'JavaScript Example Authority',
         version: '1.0.0',
-        description: "API documentation for JavaScript Example Backend"
+        description: "API documentation for JavaScript Example Backend Authority"
       },
     },
     apis: [join(__dirname, 'controllers/**/*.ts')],

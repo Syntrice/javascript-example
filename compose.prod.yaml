@@ -11,6 +11,17 @@ services:
         - postgres_password
     environment:
       NODE_ENV: production
+  javascript-example-backend-authority:
+    extends:
+        file: compose.common.yaml
+        service: javascript-example-backend-authority
+    build:
+      context: .
+      dockerfile: javascript-example-backend/projects/authority/Dockerfile
+      secrets:
+        - postgres_password
+    environment:
+      NODE_ENV: production
   javascript-example-frontend:
     extends:
         file: compose.common.yaml

@@ -13,9 +13,18 @@ services:
       dockerfile: javascript-example-backend/projects/api/Dockerfile.dev
     environment:
       NODE_ENV: development
-    volumes:
-      - ./javascript-example-backend/projects/common/dist:/usr/src/app/javascript-example-backend/projects/common/dist
-      - ./javascript-example-backend/projects/common/generated:/usr/src/app/javascript-example-backend/projects/common/generated
+    depends_on:
+      javascript-example-database:
+        condition: service_started
+  javascript-example-backend-authority:
+    extends:
+      file: compose.common.yaml
+      service: javascript-example-backend-authority
+    build:
+      context: .
+      dockerfile: javascript-example-backend/projects/authority/Dockerfile.dev
+    environment:
+      NODE_ENV: development
     depends_on:
       javascript-example-database:
         condition: service_started
@@ -28,6 +37,7 @@ services:
       POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
     volumes:
       - ./javascript-example-backend/projects/common/src/database:/usr/src/app/javascript-example-backend/projects/common/src/database
+      - ./javascript-example-backend/projects/common/dist:/usr/src/app/javascript-example-backend/projects/common/dist
       - ./javascript-example-backend/projects/common/generated:/usr/src/app/javascript-example-backend/projects/common/generated
     ports:
       - "5555:5555"

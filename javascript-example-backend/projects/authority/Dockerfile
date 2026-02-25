@@ -33,16 +33,16 @@ COPY javascript-example-backend/*.* ./javascript-example-backend/
 # Copy common package (dependency)
 COPY javascript-example-backend/projects/common/ ./javascript-example-backend/projects/common/
 
-# Copy api project files
-COPY javascript-example-backend/projects/api/ ./javascript-example-backend/projects/api/
+# Copy authority project files
+COPY javascript-example-backend/projects/authority/ ./javascript-example-backend/projects/authority/
 
 # Install all dependencies
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
-  pnpm install --filter "@javascript-example-backend/api..." --frozen-lockfile
+  pnpm install --filter "@javascript-example-backend/authority..." --frozen-lockfile
 
-# Build common first (prisma generate + tsc), then build api
+# Build common first (prisma generate + tsc), then build authority
 RUN pnpm --filter "@javascript-example-backend/common" run build && \
-  pnpm --filter "@javascript-example-backend/api" run build
+  pnpm --filter "@javascript-example-backend/authority" run build
 
 #---------------------------
 #     RUNNER STAGE
@@ -65,23 +65,23 @@ COPY --chown=node:node javascript-example-backend/*.* ./javascript-example-backe
 # Copy common project package.json
 COPY --chown=node:node javascript-example-backend/projects/common/package.json ./javascript-example-backend/projects/common/
 
-# Copy api project package.json
-COPY --chown=node:node javascript-example-backend/projects/api/package.json ./javascript-example-backend/projects/api/
+# Copy authority project package.json
+COPY --chown=node:node javascript-example-backend/projects/authority/package.json ./javascript-example-backend/projects/authority/
 
 # Copy production dependencies from build stage
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/src/app/javascript-example-backend/projects/common/node_modules ./javascript-example-backend/projects/common/node_modules
-COPY --chown=node:node --from=build /usr/src/app/javascript-example-backend/projects/api/node_modules ./javascript-example-backend/projects/api/node_modules
+COPY --chown=node:node --from=build /usr/src/app/javascript-example-backend/projects/authority/node_modules ./javascript-example-backend/projects/authority/node_modules
 
 # Copy built common (dist + generated Prisma client)
 COPY --chown=node:node --from=build /usr/src/app/javascript-example-backend/projects/common/dist ./javascript-example-backend/projects/common/dist
 COPY --chown=node:node --from=build /usr/src/app/javascript-example-backend/projects/common/generated ./javascript-example-backend/projects/common/generated
 
-# Copy built api
-COPY --chown=node:node --from=build /usr/src/app/javascript-example-backend/projects/api/dist ./javascript-example-backend/projects/api/dist
+# Copy built authority
+COPY --chown=node:node --from=build /usr/src/app/javascript-example-backend/projects/authority/dist ./javascript-example-backend/projects/authority/dist
 
 # Expose the port
-EXPOSE 3000
+EXPOSE 3001
 
 # Run the application
-CMD ["pnpm", "--filter", "@javascript-example-backend/api", "run", "start"]
+CMD ["pnpm", "--filter", "@javascript-example-backend/authority", "run", "start"]
