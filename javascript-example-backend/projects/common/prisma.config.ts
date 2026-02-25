@@ -17,7 +17,7 @@ function getDatabaseUrl(): string {
 }
 
 export default defineConfig({
-  schema: "src/database/schema.prisma",
+  schema: "src/database/schema",
   migrations: {
     path: "src/database/migrations",
   },
