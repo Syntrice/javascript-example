@@ -2,4 +2,13 @@ packages:
   - javascript-example-backend
   - javascript-example-backend/projects/*
   - javascript-example-frontend
+
+ignoredBuiltDependencies:
+  - '@scarf/scarf'
+
 injectWorkspacePackages: true
+
+onlyBuiltDependencies:
+  - '@prisma/engines'
+  - esbuild
+  - prisma
