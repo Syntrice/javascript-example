@@ -5,6 +5,33 @@ settings:
   excludeLinksFromLockfile: false
   injectWorkspacePackages: true
 
+catalogs:
+  backend:
+    '@eslint/js':
+      specifier: ^9.39.1
+      version: 9.39.2
+    '@types/node':
+      specifier: ^24.10.1
+      version: 24.10.9
+    eslint:
+      specifier: ^9.39.1
+      version: 9.39.2
+    eslint-plugin-unused-imports:
+      specifier: ^4.3.0
+      version: 4.3.0
+    globals:
+      specifier: ^16.5.0
+      version: 16.5.0
+    jiti:
+      specifier: ^2.6.1
+      version: 2.6.1
+    typescript:
+      specifier: ^5.9.3
+      version: 5.9.3
+    typescript-eslint:
+      specifier: ^8.48.0
+      version: 8.53.0
+
 importers:
 
   .: {}
@@ -12,28 +39,28 @@ importers:
   javascript-example-backend:
     devDependencies:
       '@eslint/js':
-        specifier: ^9.39.1
+        specifier: catalog:backend
         version: 9.39.2
       '@types/node':
-        specifier: ^24.10.1
+        specifier: catalog:backend
         version: 24.10.9
       eslint:
-        specifier: ^9.39.1
+        specifier: catalog:backend
         version: 9.39.2(jiti@2.6.1)
       eslint-plugin-unused-imports:
-        specifier: ^4.3.0
+        specifier: catalog:backend
         version: 4.3.0(@typescript-eslint/eslint-plugin@8.53.0(@typescript-eslint/parser@8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1))
       globals:
-        specifier: ^16.5.0
+        specifier: catalog:backend
         version: 16.5.0
       jiti:
-        specifier: ^2.6.1
+        specifier: catalog:backend
         version: 2.6.1
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:backend
         version: 5.9.3
       typescript-eslint:
-        specifier: ^8.48.0
+        specifier: catalog:backend
         version: 8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
 
   javascript-example-backend/projects/api:
@@ -75,6 +102,9 @@ importers:
       '@types/express':
         specifier: ^5.0.5
         version: 5.0.6
+      '@types/node':
+        specifier: catalog:backend
+        version: 24.10.9
       '@types/pg':
         specifier: ^8.16.0
         version: 8.16.0
@@ -84,12 +114,12 @@ importers:
       '@types/swagger-ui-express':
         specifier: ^4.1.8
         version: 4.1.8
-      javascript-example-backend:
-        specifier: workspace:*
-        version: link:../..
       prisma:
         specifier: ^7.2.0
         version: 7.2.0(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3)
+      typescript:
+        specifier: catalog:backend
+        version: 5.9.3
 
   javascript-example-frontend:
     dependencies:

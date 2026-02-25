@@ -16,12 +16,13 @@
   },
   "packageManager": "pnpm@10.17.1",
   "devDependencies": {
-    "javascript-example-backend": "workspace:*",
     "@types/express": "^5.0.5",
+    "@types/node": "catalog:backend",
     "@types/pg": "^8.16.0",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
-    "prisma": "^7.2.0"
+    "prisma": "^7.2.0",
+    "typescript": "catalog:backend"
   },
   "dependencies": {
     "@inversifyjs/http-core": "^4.6.0",
