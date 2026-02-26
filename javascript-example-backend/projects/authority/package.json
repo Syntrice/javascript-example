@@ -11,20 +11,26 @@
   },
   "packageManager": "pnpm@10.17.1",
   "dependencies": {
-    "@javascript-example-backend/common": "workspace:*",
     "@inversifyjs/http-core": "catalog:backend",
     "@inversifyjs/http-express-v4": "catalog:backend",
+    "@javascript-example-backend/common": "workspace:*",
+    "bcrypt": "^6.0.0",
+    "ejs": "^4.0.1",
     "express": "catalog:backend",
     "inversify": "catalog:backend",
+    "oidc-provider": "^9.6.1",
+    "redis": "^5.11.0",
     "reflect-metadata": "catalog:backend",
     "swagger-jsdoc": "catalog:backend",
     "swagger-ui-express": "catalog:backend"
   },
   "devDependencies": {
-    "typescript": "catalog:backend",
-    "@types/node": "catalog:backend",
     "@types/express": "catalog:backend",
+    "@types/node": "catalog:backend",
     "@types/swagger-jsdoc": "catalog:backend",
-    "@types/swagger-ui-express": "catalog:backend"
+    "@types/swagger-ui-express": "catalog:backend",
+    "@types/bcrypt": "^6.0.0",
+    "@types/oidc-provider": "^9.5.0",
+    "typescript": "catalog:backend"
   }
 }
