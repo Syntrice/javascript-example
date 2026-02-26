@@ -30,6 +30,7 @@ services:
     ports:
       - 3000:3000
     environment:
+      PORT: 3000
       POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
     secrets:
       - postgres_password 
@@ -41,6 +42,7 @@ services:
     ports:
       - 3001:3001
     environment:
+      PORT: 3001
       POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
       REDIS_URL: redis://javascript-example-redis:6379
     depends_on:

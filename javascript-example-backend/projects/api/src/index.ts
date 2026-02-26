@@ -20,8 +20,8 @@ if (process.env.NODE_ENV === "development") {
   setupSwagger(app);
 }
 
-const port = 3000;
+const port = Number(process.env.PORT) || 3000;
 
 app.listen(port, () => {
-  console.log(`JavaScript Example Backend listing at http://localhost:3000`);
+  console.log(`JavaScript Example Backend API listing at http://localhost:${port}`);
 });

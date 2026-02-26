@@ -16,8 +16,8 @@ if (process.env.NODE_ENV === "development") {
   setupSwagger(app);
 }
 
-const port = 3001;
+const port = Number(process.env.PORT) || 3001;
 
 app.listen(port, () => {
-  console.log(`JavaScript Example Authority listing at http://localhost:3001`);
+  console.log(`JavaScript Example Backend Authority listing at http://localhost:${port}`);
 });
