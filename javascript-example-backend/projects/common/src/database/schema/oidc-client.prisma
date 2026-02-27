@@ -1,0 +1,12 @@
+model OidcClient {
+  id                      String   @id @default(uuid()) @db.Uuid
+  name                    String   @db.VarChar(255)
+  secret                  String   @db.VarChar(255)
+  redirectUris            String[]
+  grantTypes              String[] @default(["authorization_code"])
+  responseTypes           String[] @default(["code"])
+  tokenEndpointAuthMethod String   @default("client_secret_basic") @db.VarChar(50)
+  applicationType         String   @default("web") @db.VarChar(10)
+  createdAt               DateTime @default(now()) @db.Timestamptz()
+  updatedAt               DateTime @updatedAt @db.Timestamptz()
+}
