@@ -34,6 +34,10 @@ services:
     extends:
         file: compose.common.yaml
         service: javascript-example-database
+  javascript-example-redis:
+    extends:
+        file: compose.common.yaml
+        service: javascript-example-redis
 secrets:
   postgres_password:
     file: secrets/postgres_password.txt

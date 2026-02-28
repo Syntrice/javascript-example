@@ -32,6 +32,8 @@ services:
     depends_on:
       javascript-example-database:
         condition: service_started
+      javascript-example-redis:
+        condition: service_started
   javascript-example-db-tools:
     container_name: javascript-example-db-tools
     build:
