@@ -1,23 +1,24 @@
 import { Container } from "inversify";
 import { InversifyExpressHttpAdapter } from "@inversifyjs/http-express-v4";
-import { RootController } from "./controllers/root.controller.js";
 import { setupSwagger } from "./swagger.js";
+import { CONFIG } from "./config.js";
+import Provider from "oidc-provider";
+import { OidcStorageAdapter } from "./services/oidc-storage-adapter.js";
+import "./controllers/root.controller.js";
 
-const container: Container = new Container();
-
-container.bind(RootController).toSelf().inSingletonScope();
-
+const container: Container = new Container({ autobind: true });
 const adapter: InversifyExpressHttpAdapter = new InversifyExpressHttpAdapter(container);
 
 const app = await adapter.build();
 
 // On development, enable swagger
-if (process.env.NODE_ENV === "development") {
+if (CONFIG.server.environment === "development") {
   setupSwagger(app);
 }
 
-const port = Number(process.env.PORT) || 3001;
+const provider = new Provider(CONFIG.oidc.issuer, { adapter: OidcStorageAdapter });
+app.use(`/oidc`, provider.callback());
 
-app.listen(port, () => {
-  console.log(`JavaScript Example Backend Authority listing at http://localhost:${port}`);
+app.listen(CONFIG.server.port, () => {
+  console.log(`JavaScript Example Backend Authority listing at ${CONFIG.server.rootAddress}`);
 });
