@@ -5,8 +5,10 @@ import { CONFIG } from "./config.js";
 import Provider from "oidc-provider";
 import { OidcStorageAdapter } from "./services/oidc-storage-adapter.js";
 import "./controllers/root.controller.js";
+import { OidcProviderService } from "./services/oidc-provider.service.js";
 
 const container: Container = new Container({ autobind: true });
+container.bind(OidcProviderService).toSelf().inSingletonScope();
 const adapter: InversifyExpressHttpAdapter = new InversifyExpressHttpAdapter(container);
 
 const app = await adapter.build();
@@ -16,7 +18,7 @@ if (CONFIG.server.environment === "development") {
   setupSwagger(app);
 }
 
-const provider = new Provider(CONFIG.oidc.issuer, { adapter: OidcStorageAdapter });
+const provider = container.get(OidcProviderService).getProvider();
 app.use(`/oidc`, provider.callback());
 
 app.listen(CONFIG.server.port, () => {
