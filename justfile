@@ -9,7 +9,7 @@ be-api *args:
     docker compose -f compose.dev.yaml exec javascript-example-backend-api pnpm --filter @javascript-example-backend/api {{args}}
 
 be-authority *args:
-    docker compose -f compose.dev.yaml exec javascript-example-backend-authority pnpm --filter @javascript-example-backend/api {{args}}
+    docker compose -f compose.dev.yaml exec javascript-example-backend-authority pnpm --filter @javascript-example-backend/authority {{args}}
 
 # Run pnpm command in db-tools container (for prisma commands)
 db *args:
