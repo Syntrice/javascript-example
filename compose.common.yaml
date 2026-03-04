@@ -32,8 +32,10 @@ services:
     environment:
       PORT: 3000
       POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      AUTHORITY_URL: http://javascript-example-backend-authority:3001
+      ISSUER: http://localhost:3001
     secrets:
-      - postgres_password 
+      - postgres_password
   javascript-example-backend-authority:
     container_name: javascript-example-backend-authority
     build:

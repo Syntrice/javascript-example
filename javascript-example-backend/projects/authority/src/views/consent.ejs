@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Authorize</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #f5f5f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+    .card { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 2rem; width: 100%; max-width: 400px; }
+    h1 { font-size: 1.5rem; margin-bottom: 0.5rem; text-align: center; }
+    .client-name { text-align: center; color: #666; margin-bottom: 1.5rem; font-size: 0.875rem; }
+    h2 { font-size: 1rem; font-weight: 500; margin-bottom: 0.5rem; }
+    ul { list-style: none; margin-bottom: 1rem; }
+    li { padding: 0.375rem 0; font-size: 0.875rem; color: #333; }
+    li::before { content: "\2713"; color: #4a4; margin-right: 0.5rem; }
+    .actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
+    button { flex: 1; padding: 0.625rem; border: none; border-radius: 4px; font-size: 1rem; cursor: pointer; }
+    .btn-primary { background: #111; color: #fff; }
+    .btn-primary:hover { background: #333; }
+    .btn-danger { background: #e5e5e5; color: #333; }
+    .btn-danger:hover { background: #d5d5d5; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Authorize</h1>
+    <p class="client-name"><strong><%= params.client_id %></strong> is requesting access</p>
+
+    <% if (scopes) { %>
+      <h2>Scopes</h2>
+      <ul>
+        <% for (const scope of Object.keys(scopes)) { %>
+          <li><%= scope %></li>
+        <% } %>
+      </ul>
+    <% } %>
+
+    <% if (claims) { %>
+      <h2>Claims</h2>
+      <ul>
+        <% for (const claim of Object.keys(claims)) { %>
+          <li><%= claim %></li>
+        <% } %>
+      </ul>
+    <% } %>
+
+    <div class="actions">
+      <form method="post" action="/interaction/<%= uid %>/confirm" style="flex: 1;">
+        <button type="submit" class="btn-primary" style="width: 100%;">Allow</button>
+      </form>
+      <form method="post" action="/interaction/<%= uid %>/abort" style="flex: 1;">
+        <button type="submit" class="btn-danger" style="width: 100%;">Deny</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

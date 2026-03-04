@@ -20,6 +20,7 @@ export default defineConfig({
   schema: "src/database/schema",
   migrations: {
     path: "src/database/migrations",
+    seed: "node dist/database/seed.js",
   },
   datasource: {
     url: getDatabaseUrl(),

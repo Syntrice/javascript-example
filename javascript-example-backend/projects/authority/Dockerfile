@@ -77,7 +77,7 @@ COPY --chown=node:node --from=build /usr/src/app/javascript-example-backend/proj
 COPY --chown=node:node --from=build /usr/src/app/javascript-example-backend/projects/common/dist ./javascript-example-backend/projects/common/dist
 COPY --chown=node:node --from=build /usr/src/app/javascript-example-backend/projects/common/generated ./javascript-example-backend/projects/common/generated
 
-# Copy built authority
+# Copy built authority (dist includes views copied during build)
 COPY --chown=node:node --from=build /usr/src/app/javascript-example-backend/projects/authority/dist ./javascript-example-backend/projects/authority/dist
 
 # Expose the port

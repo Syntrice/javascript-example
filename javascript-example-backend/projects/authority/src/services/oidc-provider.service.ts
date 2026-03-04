@@ -23,7 +23,7 @@ export class OidcProviderService {
       // clientBasedCORS: (ctx, origin, client) => {},
       clients: [], // Clients are connected in database, but we can hardcode them here
       features: {
-        devInteractions: { enabled: CONFIG.server.environment === "development" },
+        devInteractions: { enabled: false },
         // resourceIndicators: {} We need this if we ever add multiple APIs or third party resources (i.e. apache superset)
         clientCredentials: { enabled: true }, // Allows backend services with no user context to authenticate
         // features.registration, // If we ever add runtime client registration we need this,
@@ -48,7 +48,10 @@ export class OidcProviderService {
         AuthorizationCode: CONFIG.oidc.authorizationCodeLifetime,
         BackchannelAuthenticationRequest: (ctx, _request, _client) => {
           if (ctx?.oidc?.params?.requested_expiry) {
-            return Math.min(CONFIG.oidc.backchannelAuthenticationRequestLifetime, +ctx.oidc.params.requested_expiry);
+            return Math.min(
+              CONFIG.oidc.backchannelAuthenticationRequestLifetime,
+              +ctx.oidc.params.requested_expiry,
+            );
           }
 
           return CONFIG.oidc.backchannelAuthenticationRequestLifetime;
